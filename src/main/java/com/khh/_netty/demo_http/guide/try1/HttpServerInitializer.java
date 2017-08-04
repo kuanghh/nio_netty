@@ -1,28 +1,28 @@
 package com.khh._netty.demo_http.guide.try1;
 
 import com.khh._netty.demo_http.HttpPipelineInitializer;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelPipeline;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.*;
+import io.netty.handler.codec.http.*;
+import io.netty.util.AsciiString;
+
 
 /**
  * Created by 951087952@qq.com on 2017/8/4.
  */
-public class HttpServerInitializer extends HttpPipelineInitializer {
-    public HttpServerInitializer(boolean client) {
-        super(client);
-    }
+public class HttpServerInitializer extends ChannelInitializer{
+
 
     @Override
     protected void initChannel(Channel ch) throws Exception {
-        super.initChannel(ch);
 
         ChannelPipeline pipeline = ch.pipeline();
 
+        pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new HttpObjectAggregator(64 * 1024));
+
+//        pipeline.addLast(new HttpServerExpectContinueHandler());
+
         pipeline.addLast(new ChannelInboundHandlerAdapter(){
 
             @Override
@@ -35,8 +35,28 @@ public class HttpServerInitializer extends HttpPipelineInitializer {
                 if(msg instanceof HttpRequest){
                     System.out.println("msg is HttpRequest");
                     //返回一个HttpResponse消息
+//                    HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1,HttpResponseStatus.OK);
+                    FullHttpResponse response = new DefaultFullHttpResponse(((HttpRequest) msg).protocolVersion(),
+                                    HttpResponseStatus.OK,
+                                    Unpooled.wrappedBuffer("返回一个消息给你".getBytes()));
+
+                    response.headers().set(HttpHeaderNames.CONTENT_TYPE,"text/plain;charset=utf-8");
+                    response.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
+
+                    boolean keepAlive = HttpUtil.isKeepAlive((HttpRequest)msg);
+
+                    if(!keepAlive){
+                        ctx.write(response).addListener(ChannelFutureListener.CLOSE);
+                    }else{
+                        response.headers().set(HttpHeaderNames.CONNECTION, new AsciiString("keep-alive"));
+                        ctx.write(response);
+
+                    }
+
+                    System.out.println(response.toString());
+
                 }else{
-                    System.out.println("msg is not HttpRequest");//这个,也不是FullHttpRequest
+                    System.out.println("msg is not HttpRequest");
                 }
             }
 

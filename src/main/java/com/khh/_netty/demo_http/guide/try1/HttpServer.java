@@ -2,6 +2,7 @@ package com.khh._netty.demo_http.guide.try1;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
@@ -23,11 +24,11 @@ public class HttpServer {
         NioEventLoopGroup worker = new NioEventLoopGroup();
 
         try{
-
+            bootstrap.option(ChannelOption.SO_BACKLOG, 1024);
             bootstrap.group(boss,worker)
                     .channel(NioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(address,port))
-                    .childHandler(new HttpServerInitializer(false));
+                    .childHandler(new HttpServerInitializer());
 
             ChannelFuture future = bootstrap.bind().sync();
 
