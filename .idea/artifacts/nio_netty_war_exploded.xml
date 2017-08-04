@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="nio_netty:war exploded">
+    <output-path>$PROJECT_DIR$/target/nio_netty</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="nio_netty" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: io.netty:netty-all:4.1.13.Final" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/nio_netty/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="nio_netty/web/Web" />
+    </root>
+  </artifact>
+</component>
