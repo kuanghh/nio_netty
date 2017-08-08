@@ -2,6 +2,7 @@ package com.khh._netty.demo_echo.client;
 
 import com.khh._netty.demo_combine_codec.CombineByteCharCodec;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
@@ -26,7 +27,6 @@ public class EchoClient {
 
     public void start() throws Exception{
         EventLoopGroup group = new NioEventLoopGroup();
-
         try{
             //创建Bootstrap
             Bootstrap b = new Bootstrap();

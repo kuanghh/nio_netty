@@ -39,6 +39,7 @@ public class EchoServer {
         //创建EventLoopGroup
         EventLoopGroup group = new NioEventLoopGroup();
 
+
         try{
             //创建ServerBootstrap
             ServerBootstrap b = new ServerBootstrap();
