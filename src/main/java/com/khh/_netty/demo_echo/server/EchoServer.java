@@ -51,6 +51,7 @@ public class EchoServer {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             //EchoServerHandler被标注为@Shareable,所以我们可以总是使用同样的实例
                             socketChannel.pipeline().addLast(serverHandler);
+//                              socketChannel.pipeline().addLast(new EchoServerHandler());
                         }
                     });
             //异步地绑定服务器，调用sync()方法阻塞等待直到绑定完成

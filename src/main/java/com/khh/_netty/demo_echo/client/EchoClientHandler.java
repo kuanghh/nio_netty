@@ -12,8 +12,10 @@ import io.netty.util.CharsetUtil;
  *
  * 通过ChannelHandler实现客户端逻辑
  */
-@ChannelHandler.Sharable //标示该类的实例可以被多个Channel共享
+//@ChannelHandler.Sharable //标示该类的实例可以被多个Channel共享
 public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
+
+//    int count = 0;
 
     /**
      * 当从服务器接收到一条消息时被调用
@@ -24,6 +26,9 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     public void channelRead0(ChannelHandlerContext context, ByteBuf byteBuf) throws Exception {
+
+//        System.out.println("client count " + (count++));
+
         //记录已接收消息的转储
         System.out.println("Client received : " + byteBuf.toString(CharsetUtil.UTF_8));
     }
